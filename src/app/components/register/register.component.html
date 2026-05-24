@@ -1,0 +1,47 @@
+<div class="auth-page">
+  <div class="auth-card auth-card-wide">
+    <a routerLink="/" class="back-link">← Home</a>
+    <div class="auth-brand">
+      <span class="brand-icon">◆</span>
+      <h1>Join {{ appName }}</h1>
+    </div>
+    <p class="auth-sub">Register as Employee, Support Engineer, or Manager</p>
+
+    @if (error()) {
+      <div class="alert alert-error">{{ error() }}</div>
+    }
+    @if (success()) {
+      <div class="alert alert-success">{{ success() }}</div>
+    }
+
+    <form (ngSubmit)="submit()" class="auth-form">
+      <label>
+        <span>Username</span>
+        <input [(ngModel)]="username" name="username" required minlength="3" placeholder="jane.doe" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" [(ngModel)]="email" name="email" required placeholder="you@company.com" />
+      </label>
+      <label>
+        <span>Password</span>
+        <input type="password" [(ngModel)]="password" name="password" required minlength="6" placeholder="Min 6 characters" />
+      </label>
+      <label>
+        <span>Role</span>
+        <select [(ngModel)]="role" name="role" required>
+          @for (r of roles; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+        </select>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+        {{ loading() ? 'Creating…' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Already registered? <a routerLink="/login">Sign in</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="page-header">
+  <div>
+    <h1>Operations analytics</h1>
+    <p class="muted">Organization-wide ticket metrics and SLA health</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <p class="muted">Loading dashboard…</p>
+} @else if (error()) {
+  <div class="alert alert-error">{{ error() }}</div>
+} @else if (data(); as d) {
+  <div class="analytics-grid">
+    <div class="analytics-card accent">
+      <span class="analytics-value">{{ d.totalTickets }}</span>
+      <span class="analytics-label">Total tickets</span>
+    </div>
+    <div class="analytics-card">
+      <span class="analytics-value">{{ d.openTickets }}</span>
+      <span class="analytics-label">Open</span>
+    </div>
+    <div class="analytics-card">
+      <span class="analytics-value">{{ d.resolvedTickets }}</span>
+      <span class="analytics-label">Resolved</span>
+    </div>
+    <div class="analytics-card danger">
+      <span class="analytics-value">{{ d.slaBreached }}</span>
+      <span class="analytics-label">SLA breached</span>
+    </div>
+  </div>
+
+  <section class="panel category-panel">
+    <h2>Tickets by category</h2>
+    @if (d.categoryStats.length === 0) {
+      <p class="muted">No category data yet.</p>
+    } @else {
+      <ul class="category-bars">
+        @for (row of d.categoryStats; track row.category) {
+          <li>
+            <div class="bar-label">
+              <span>{{ categoryLabel(row.category) }}</span>
+              <strong>{{ row.count }}</strong>
+            </div>
+            <div class="bar-track">
+              <div
+                class="bar-fill"
+                [style.width.%]="(row.count / d.totalTickets) * 100"
+              ></div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

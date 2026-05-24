@@ -1,0 +1,74 @@
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.analytics-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+.analytics-card.accent .analytics-value {
+  color: var(--accent);
+}
+
+.analytics-card.danger .analytics-value {
+  color: #f87171;
+}
+
+.analytics-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.analytics-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.category-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+.category-panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+}
+
+.category-bars {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+
+.bar-track {
+  height: 8px;
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #6366f1);
+  border-radius: 999px;
+  min-width: 4px;
+}

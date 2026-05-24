@@ -1,0 +1,66 @@
+<div class="page-header">
+  <div>
+    <h1>Welcome, {{ session?.username }}</h1>
+    <p class="muted">
+      @if (session?.role === 'Employee') {
+        Your submitted tickets and live status updates
+      } @else {
+        Organization ticket overview
+      }
+    </p>
+  </div>
+  @if (session?.role === 'Employee') {
+    <a routerLink="/app/tickets/new" class="btn btn-primary">+ Raise ticket</a>
+  }
+</div>
+
+@if (loading()) {
+  <p class="muted">Loading tickets…</p>
+} @else if (error()) {
+  <div class="alert alert-error">{{ error() }}</div>
+} @else if (tickets().length === 0) {
+  <div class="empty-state">
+    <h2>No tickets yet</h2>
+    <p>When you raise an incident, it will appear here with SLA tracking.</p>
+    @if (session?.role === 'Employee') {
+      <a routerLink="/app/tickets/new" class="btn btn-primary">Create your first ticket</a>
+    }
+  </div>
+} @else {
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-value">{{ tickets().length }}</span>
+      <span class="stat-label">Total</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ tickets().filter(t => t.status === 'Open').length }}</span>
+      <span class="stat-label">Open</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ tickets().filter(t => isSlaBreached(t.slaDueDate, t.status)).length }}</span>
+      <span class="stat-label">SLA risk</span>
+    </div>
+  </div>
+
+  <div class="ticket-grid">
+    @for (t of tickets(); track t.id) {
+      <a [routerLink]="['/app/tickets', t.id]" class="ticket-card">
+        <div class="ticket-card-top">
+          <span class="ticket-id">#{{ t.id }}</span>
+          <span class="badge" [class]="statusClass(t.status)">{{ t.status }}</span>
+        </div>
+        <h3>{{ t.title }}</h3>
+        <p class="ticket-meta">
+          {{ categoryLabel(t.category) }} ·
+          <span [class]="priorityClass(t.priority)">{{ t.priority }}</span>
+        </p>
+        <p class="ticket-dates">
+          Created {{ formatDate(t.createdAt) }}
+          @if (isSlaBreached(t.slaDueDate, t.status)) {
+            <span class="sla-breach">SLA breached</span>
+          }
+        </p>
+      </a>
+    }
+  </div>
+}

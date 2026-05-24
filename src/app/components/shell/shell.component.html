@@ -1,0 +1,37 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">◆</span>
+      <div>
+        <strong>{{ appName }}</strong>
+        <small>Service Desk</small>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/app/dashboard" routerLinkActive="active">📋 My workspace</a>
+      @if (isEmployee) {
+        <a routerLink="/app/tickets/new" routerLinkActive="active">➕ Raise ticket</a>
+      }
+      @if (isEngineer) {
+        <a routerLink="/app/engineer" routerLinkActive="active">🛠 Engineer queue</a>
+      }
+      @if (isManager) {
+        <a routerLink="/app/analytics" routerLinkActive="active">📊 Analytics</a>
+      }
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="avatar">{{ session?.username?.charAt(0) ?? '?' }}</div>
+      <div>
+        <strong>{{ session?.username }}</strong>
+        <span class="role-pill">{{ session?.role }}</span>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="shell-main">
+    <router-outlet />
+  </main>
+</div>
