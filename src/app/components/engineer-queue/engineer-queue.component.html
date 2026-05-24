@@ -1,0 +1,42 @@
+<div class="page-header">
+  <div>
+    <h1>Engineer queue</h1>
+    <p class="muted">Open and in-progress incidents awaiting resolution</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <p class="muted">Loading queue…</p>
+} @else if (tickets().length === 0) {
+  <div class="empty-state">
+    <h2>Queue is clear</h2>
+    <p>No active tickets right now.</p>
+  </div>
+} @else {
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of tickets(); track t.id) {
+        <tr>
+          <td>#{{ t.id }}</td>
+          <td>{{ t.title }}</td>
+          <td>{{ categoryLabel(t.category) }}</td>
+          <td><span class="priority-{{ t.priority.toLowerCase() }}">{{ t.priority }}</span></td>
+          <td><span class="badge status-open">{{ t.status }}</span></td>
+          <td>{{ formatDate(t.createdAt) }}</td>
+          <td><a [routerLink]="['/app/tickets', t.id]" class="btn btn-ghost btn-sm">Resolve →</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

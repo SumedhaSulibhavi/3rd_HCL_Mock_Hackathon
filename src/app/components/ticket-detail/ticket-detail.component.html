@@ -1,0 +1,83 @@
+<a routerLink="/app/dashboard" class="back-link">← Back to workspace</a>
+
+@if (loading()) {
+  <p class="muted">Loading ticket…</p>
+} @else if (error()) {
+  <div class="alert alert-error">{{ error() }}</div>
+} @else if (ticket(); as t) {
+  <div class="detail-header">
+    <div>
+      <span class="ticket-id">Ticket #{{ t.id }}</span>
+      <h1>{{ t.title }}</h1>
+      <p class="muted">
+        {{ categoryLabel(t.category) }} · {{ t.priority }} priority ·
+        Created {{ formatDate(t.createdAt) }}
+      </p>
+    </div>
+    <div class="detail-badges">
+      <span class="badge status-open">{{ t.status }}</span>
+      @if (isSlaBreached(t.slaDueDate, t.status)) {
+        <span class="badge sla-breach-badge">SLA breached</span>
+      } @else {
+        <span class="badge sla-ok">Due {{ formatDate(t.slaDueDate) }}</span>
+      }
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <section class="panel">
+      <h2>Description</h2>
+      <p class="description">{{ t.description }}</p>
+
+      @if (canUpdateStatus) {
+        <div class="engineer-controls">
+          <label>
+            <span>Update status</span>
+            <select [value]="t.status" (change)="updateStatus($any($event.target).value)" [disabled]="saving()">
+              @for (s of statuses; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select>
+          </label>
+          <label>
+            <span>Update priority</span>
+            <select [value]="t.priority" (change)="updatePriority($any($event.target).value)">
+              @for (p of priorities; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+          </label>
+        </div>
+      }
+    </section>
+
+    <section class="panel comments-panel">
+      <h2>Comments</h2>
+      @if (comments().length === 0) {
+        <p class="muted">No comments yet. Start the conversation below.</p>
+      } @else {
+        <ul class="comment-list">
+          @for (c of comments(); track c.id) {
+            <li>
+              <div class="comment-meta">
+                User #{{ c.userId }} · {{ formatDate(c.createdAt) }}
+              </div>
+              <p>{{ c.commentText }}</p>
+            </li>
+          }
+        </ul>
+      }
+
+      <form class="comment-form" (ngSubmit)="postComment()">
+        <textarea
+          [(ngModel)]="newComment"
+          name="comment"
+          rows="3"
+          placeholder="Add an update or question…"
+          required
+        ></textarea>
+        <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
+      </form>
+    </section>
+  </div>
+}

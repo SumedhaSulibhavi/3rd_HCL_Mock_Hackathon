@@ -1,0 +1,41 @@
+<div class="landing">
+  <div class="landing-glow"></div>
+  <header class="landing-nav">
+    <div class="brand">
+      <span class="brand-icon">◆</span>
+      <span>{{ appName }}</span>
+    </div>
+    <nav>
+      <a routerLink="/login" class="btn btn-ghost">Sign in</a>
+      <a routerLink="/register" class="btn btn-primary">Get started</a>
+    </nav>
+  </header>
+
+  <main class="landing-hero">
+    <p class="eyebrow">Enterprise IT Operations</p>
+    <h1>{{ tagline }}</h1>
+    <p class="lead">
+      Raise incidents, track SLA deadlines, collaborate with support engineers,
+      and give managers real-time visibility — all in one secure workspace.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/register" class="btn btn-primary btn-lg">Create account</a>
+      <a routerLink="/login" class="btn btn-outline btn-lg">Employee login</a>
+    </div>
+
+    <div class="feature-grid">
+      <article>
+        <h3>🎫 Smart ticketing</h3>
+        <p>Software, hardware, network, and access requests with priority routing.</p>
+      </article>
+      <article>
+        <h3>⏱ SLA monitoring</h3>
+        <p>Automatic breach indicators and due-date tracking on every ticket.</p>
+      </article>
+      <article>
+        <h3>📊 Role dashboards</h3>
+        <p>Employees, engineers, and managers each get the view they need.</p>
+      </article>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,55 @@
+<div class="page-header">
+  <div>
+    <a routerLink="/app/dashboard" class="back-link">← Back to workspace</a>
+    <h1>Raise new ticket</h1>
+    <p class="muted">Describe your IT incident — SLA timer starts on submit</p>
+  </div>
+</div>
+
+@if (error()) {
+  <div class="alert alert-error">{{ error() }}</div>
+}
+
+<form class="form-panel" (ngSubmit)="submit()">
+  <label>
+    <span>Title</span>
+    <input [(ngModel)]="title" name="title" required minlength="5" placeholder="Brief summary of the issue" />
+  </label>
+
+  <label>
+    <span>Category</span>
+    <select [(ngModel)]="category" name="category" required>
+      @for (c of categories; track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Priority</span>
+    <select [(ngModel)]="priority" name="priority" required>
+      @for (p of priorities; track p) {
+        <option [value]="p">{{ p }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Description</span>
+    <textarea
+      [(ngModel)]="description"
+      name="description"
+      required
+      minlength="10"
+      rows="6"
+      placeholder="Steps to reproduce, error messages, business impact…"
+    ></textarea>
+  </label>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" [disabled]="loading()">
+      {{ loading() ? 'Submitting…' : 'Submit ticket' }}
+    </button>
+    <a routerLink="/app/dashboard" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>
